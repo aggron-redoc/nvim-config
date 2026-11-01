@@ -90,4 +90,4 @@ fzf.setup({
 })
 
 -- Route vim.ui.select through fzf-lua (LSP code actions, diagnostics, etc.)
-vim.ui.select = fzf.ui_select
+fzf.register_ui_select()

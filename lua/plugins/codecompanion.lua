@@ -4,7 +4,7 @@ vim.pack.add({
 	{ src = "https://github.com/nvim-lua/plenary.nvim" },
 	{
 		src = "https://github.com/olimorris/codecompanion.nvim",
-		version = vim.version.range("^19.0.0"),
+		version = vim.version.range("^20.0.0"),
 	},
 }, { load = false })
 
@@ -56,11 +56,11 @@ function M.load()
 					-- DeepSeek Search/Fetch are raw JSON endpoints, so they are wrapped
 					-- as client-side tools. Overriding these keys makes @{web_search}
 					-- and @{fetch_webpage} resolve to them.
-					["web_search"] = {
+					["deepseek_search"] = {
 						description = "Search the live web (DeepSeek Search)",
 						path = "tools.deepseek_search",
 					},
-					["fetch_webpage"] = {
+					["deepseek_fetch"] = {
 						description = "Fetch a page as Markdown (DeepSeek Fetch)",
 						path = "tools.deepseek_fetch",
 					},
