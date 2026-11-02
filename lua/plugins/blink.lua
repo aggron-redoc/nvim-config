@@ -56,7 +56,6 @@ local function load_blink()
 
 		fuzzy = {
 			implementation = "prefer_rust_with_warning",
-			prebuilt_binaries = { download = true },
 		},
 
 		cmdline = { enabled = true },

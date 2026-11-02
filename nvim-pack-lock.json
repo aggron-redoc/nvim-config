@@ -13,11 +13,6 @@
       "src": "https://github.com/Saghen/blink.cmp",
       "version": "1.0.0 - 2.0.0"
     },
-    "codecompanion.nvim": {
-      "rev": "142eadffdaa8dd06060646b6f8ef74e99c42ab06",
-      "src": "https://github.com/olimorris/codecompanion.nvim",
-      "version": "20.0.0 - 21.0.0"
-    },
     "conform.nvim": {
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim.git"
@@ -86,9 +81,17 @@
       "rev": "03eb1f0062a2cee5314d1ac3939246e4bb21352e",
       "src": "https://github.com/nvim-mini/mini.pairs.git"
     },
+    "mini.statusline": {
+      "rev": "d7133a9a244a8d93ccee42ff37fb9499af5956fb",
+      "src": "https://github.com/nvim-mini/mini.statusline.git"
+    },
     "mini.surround": {
       "rev": "5357f00aca51a3b43e7775901b1ad9699f8c2678",
       "src": "https://github.com/nvim-mini/mini.surround.git"
+    },
+    "moonfly": {
+      "rev": "2c883835f5b7b380a0a9e80695c420f7efebdfe4",
+      "src": "https://github.com/bluz71/vim-moonfly-colors"
     },
     "neotest": {
       "rev": "27bf921498043f7ecd821d6db68d05de244bbd02",
@@ -118,10 +121,6 @@
       "rev": "d3733d933833a0e59b813ecec99341527adf0c28",
       "src": "https://github.com/stevearc/oil.nvim"
     },
-    "plenary.nvim": {
-      "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
-      "src": "https://github.com/nvim-lua/plenary.nvim"
-    },
     "trouble.nvim": {
       "rev": "bd67efe408d4816e25e8491cc5ad4088e708a69a",
       "src": "https://github.com/folke/trouble.nvim"
@@ -137,10 +136,6 @@
     "vim-dadbod-ui": {
       "rev": "afd07819d8efcefc3317205b855ad4e3513b0011",
       "src": "https://github.com/kristijanhusak/vim-dadbod-ui"
-    },
-    "witch-line": {
-      "rev": "eed1550d0947da701e72f9816dd3b759081285fb",
-      "src": "https://github.com/sontungexpt/witch-line.git"
     }
   }
 }

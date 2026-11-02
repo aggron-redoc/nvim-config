@@ -6,9 +6,6 @@ vim.keymap.set("x", "p", [["_dP]], { desc = "Paste over selection without yankin
 -- Delete text without saving it to any register
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete without yanking" })
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "moves lines down in visual selection" })
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "moves lines up in visual selection" })
-
 vim.keymap.set("v", "<", "<gv", { desc = "Unindent and keep selection" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent and keep selection" })
 
@@ -181,21 +178,3 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "<leader>xL", "<CMD>Trouble loclist toggle<CR>", { desc = "Location list" })
 vim.keymap.set("n", "<leader>xQ", "<CMD>Trouble qflist toggle<CR>", { desc = "Quickfix list" })
-
--- Code companion
--- lua/keymaps.lua
-
-local cc = function(cmd)
-	return function()
-		require("plugins.codecompanion").load()
-		vim.cmd(cmd)
-	end
-end
-
-vim.keymap.set({ "n", "v" }, "<leader>ca", cc("CodeCompanionActions"), { desc = "CC actions" })
-vim.keymap.set({ "n", "v" }, "<leader>cc", cc("CodeCompanionChat Toggle"), { desc = "CC chat toggle" })
-vim.keymap.set("v", "<leader>cA", cc("'<,'>CodeCompanionChat Add"), { desc = "CC add selection" })
-vim.keymap.set("n", "<leader>ci", cc("CodeCompanion"), { desc = "CC inline prompt" })
-vim.keymap.set("n", "<leader>cr", cc("CodeCompanionCodeReview"), { desc = "CC code review" })
-vim.keymap.set("n", "<leader>cx", cc("CodeCompanionChat Changes"), { desc = "CC changed files" })
-vim.keymap.set("n", "<leader>cs", cc("CodeCompanionChat"), { desc = "CC new chat" })
