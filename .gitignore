@@ -41,3 +41,6 @@ luac.out
 
 #matugen not needed
 **/matugen.lua
+
+#startup.log
+startup.log
