@@ -4,5 +4,3 @@ vim.pack.add({
     },
 })
 
-require('witch-line').setup()
-
