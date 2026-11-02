@@ -101,12 +101,6 @@ vim.keymap.set("n", "<leader>da", "<CMD>DBUIAddConnection<CR>", { desc = "DB: ad
 vim.keymap.set("n", "<leader>df", "<CMD>DBUIFindBuffer<CR>", { desc = "DB: find buffer" })
 
 -- ── DAP ─────────────────────────────────────────────────────────────
-local dap_ui = function(fn, arg)
-	return function()
-		require("dapui")[fn](arg)
-	end
-end
-
 vim.keymap.set("n", "<leader>dc", "<CMD>DapContinue<CR>", { desc = "Dap continue / start" })
 vim.keymap.set("n", "<leader>db", "<CMD>DapToggleBreakpoint<CR>", { desc = "Dap toggle breakpoint" })
 vim.keymap.set("n", "<leader>dB", "<CMD>DapSetLogPoint<CR>", { desc = "Dap log point" })
@@ -127,9 +121,18 @@ end, { desc = "Dap eval expression" })
 vim.keymap.set("v", "<leader>de", function()
 	require("dapui").eval()
 end, { desc = "Dap eval selection" })
-vim.keymap.set("n", "<leader>df", function()
-	require("dapui").float_element()
-end, { desc = "Dap float element" })
+
+local function float(id)
+	return function()
+		require("dapui").float_element(id)
+	end
+end
+
+vim.keymap.set("n", "<leader>ds", float("scopes"), { desc = "Dap float scopes" })
+vim.keymap.set("n", "<leader>dt", float("stacks"), { desc = "Dap float stacks" })
+vim.keymap.set("n", "<leader>dw", float("watches"), { desc = "Dap float watches" })
+vim.keymap.set("n", "<leader>db", float("breakpoints"), { desc = "Dap float breakpoints" })
+vim.keymap.set("n", "<leader>dr", float("repl"), { desc = "Dap float repl" })
 
 -- ── NEOTEST ─────────────────────────────────────────────────────────
 vim.keymap.set("n", "<leader>tt", function()
@@ -142,6 +145,7 @@ vim.keymap.set("n", "<leader>tl", function()
 	require("neotest").run.run_last()
 end, { desc = "Test last" })
 vim.keymap.set("n", "<leader>td", function()
+	---@diagnostic disable-next-line: missing-fields
 	require("neotest").run.run({ strategy = "dap" })
 end, { desc = "Debug nearest test" })
 vim.keymap.set("n", "<leader>ts", function()
