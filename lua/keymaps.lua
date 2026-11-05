@@ -1,4 +1,20 @@
-vim.g.mapleader = " "
+-- lua/keymaps.lua
+
+local lz = require("lz.n")
+
+-- `lz.keymap(plugin).set` has the same signature as `vim.keymap.set`, but it
+-- loads `plugin` (and runs its `after` hook) before the mapping runs.
+local function lazy(plugin)
+	return lz.keymap(plugin).set
+end
+
+-- `lz.keymap` does not support buffer-local mappings, so trigger manually.
+local function fzf_fn(name)
+	return function()
+		lz.trigger_load("fzf-lua")
+		require("fzf-lua")[name]()
+	end
+end
 
 -- replaces selected text WITHOUT losing what has been yanked
 vim.keymap.set("x", "p", [["_dP]], { desc = "Paste over selection without yanking text" })
@@ -31,7 +47,8 @@ end, { desc = "Toggle Builtin Undotree" })
 vim.keymap.set("n", "<leader>M", ":map ", { desc = "Prefills map command for seeing the custom shortcuts" })
 vim.keymap.set("n", "<leader>C", ":command ", { desc = "Prefills :command for seeing the custom shortcuts" })
 
-vim.keymap.set({ "n", "v" }, "<leader>cf", function()
+-- conform.nvim
+lazy("conform.nvim")("n", "<leader>cf", function()
 	require("conform").format({
 		lsp_format = "fallback",
 		async = false,
@@ -39,36 +56,37 @@ vim.keymap.set({ "n", "v" }, "<leader>cf", function()
 	})
 end, { desc = "Format current file or range with conform" })
 
---oil
-
-vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-
--- TODO float is taking screen space in a very bad way
-vim.keymap.set("n", "<leader>o", function()
+-- oil.nvim
+local oil = lazy("oil.nvim")
+oil("n", "-", function()
+	require("oil").open()
+end, { desc = "Open parent directory" })
+oil("n", "<leader>o", function()
 	require("oil").open_float()
 end, { desc = "Oil (float)" })
 
---fzf-lua
-local fzf = require("fzf-lua")
-local map = function(lhs, fn, desc)
-	vim.keymap.set("n", lhs, fn, { desc = desc })
-end
-
-map("<leader>ff", fzf.files, "Files")
-map("<leader>fg", fzf.git_files, "Git files")
-map("<leader>fr", fzf.oldfiles, "Recent files")
-map("<leader>fb", fzf.buffers, "Buffers")
-map("<leader>/", fzf.live_grep, "Live grep")
-map("<leader>fw", fzf.grep_cword, "Grep word under cursor")
-map("<leader>fW", fzf.grep_cWORD, "Grep WORD under cursor")
-map("<leader>fd", fzf.diagnostics_document, "Diagnostics (buffer)")
-map("<leader>fD", fzf.diagnostics_workspace, "Diagnostics (workspace)")
-map("<leader>fh", fzf.help_tags, "Help")
-map("<leader>fk", fzf.keymaps, "Keymaps")
-map("<leader>fc", fzf.commands, "Commands")
-map("<leader>fs", fzf.lsp_document_symbols, "Document symbols")
-map("<leader>fS", fzf.lsp_workspace_symbols, "Workspace symbols")
-map("<leader>fl", fzf.resume, "Resume last picker")
+-- fzf-lua
+local fzf = lazy("fzf-lua")
+fzf("n", "<leader>ff", function() require("fzf-lua").files() end, { desc = "Files" })
+fzf("n", "<leader>fg", function() require("fzf-lua").git_files() end, { desc = "Git files" })
+fzf("n", "<leader>fr", function() require("fzf-lua").oldfiles() end, { desc = "Recent files" })
+fzf("n", "<leader>fb", function() require("fzf-lua").buffers() end, { desc = "Buffers" })
+fzf("n", "<leader>/", function() require("fzf-lua").live_grep() end, { desc = "Live grep" })
+fzf("n", "<leader>fw", function() require("fzf-lua").grep_cword() end, { desc = "Grep word under cursor" })
+fzf("n", "<leader>fW", function() require("fzf-lua").grep_cWORD() end, { desc = "Grep WORD under cursor" })
+fzf("n", "<leader>fd", function() require("fzf-lua").diagnostics_document() end, { desc = "Diagnostics (buffer)" })
+fzf(
+	"n",
+	"<leader>fD",
+	function() require("fzf-lua").diagnostics_workspace() end,
+	{ desc = "Diagnostics (workspace)" }
+)
+fzf("n", "<leader>fh", function() require("fzf-lua").help_tags() end, { desc = "Help" })
+fzf("n", "<leader>fk", function() require("fzf-lua").keymaps() end, { desc = "Keymaps" })
+fzf("n", "<leader>fc", function() require("fzf-lua").commands() end, { desc = "Commands" })
+fzf("n", "<leader>fs", function() require("fzf-lua").lsp_document_symbols() end, { desc = "Document symbols" })
+fzf("n", "<leader>fS", function() require("fzf-lua").lsp_workspace_symbols() end, { desc = "Workspace symbols" })
+fzf("n", "<leader>fl", function() require("fzf-lua").resume() end, { desc = "Resume last picker" })
 
 -- LSP-only (guarded so they don't error without a client)
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -76,26 +94,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local bmap = function(lhs, fn, desc)
 			vim.keymap.set("n", lhs, fn, { buffer = ev.buf, desc = desc })
 		end
-		bmap("gd", fzf.lsp_definitions, "Definitions")
-		bmap("gr", fzf.lsp_references, "References")
-		bmap("gi", fzf.lsp_implementations, "Implementations")
-		bmap("gt", fzf.lsp_typedefs, "Type definitions")
+		bmap("gd", fzf_fn("lsp_definitions"), "Definitions")
+		bmap("gr", fzf_fn("lsp_references"), "References")
+		bmap("gi", fzf_fn("lsp_implementations"), "Implementations")
+		bmap("gt", fzf_fn("lsp_typedefs"), "Type definitions")
 	end,
 })
 
---LazyGit
+-- LazyGit (the commands are lz.n stubs until the plugin is loaded)
 vim.keymap.set("n", "<leader>gg", "<CMD>LazyGit<CR>", { desc = "Lazygit" })
 vim.keymap.set("n", "<leader>gl", "<CMD>LazyGitLog<CR>", { desc = "Lazygit log" })
 vim.keymap.set("n", "<leader>gf", "<CMD>LazyGitFilterCurrentFile<CR>", { desc = "Lazygit: file history" })
 
---Direnv
+-- Direnv
 vim.keymap.set("n", "<leader>da", "<CMD>Direnv allow<CR>", { desc = "Direnv allow" })
 vim.keymap.set("n", "<leader>dr", "<CMD>Direnv reload<CR>", { desc = "Direnv reload" })
-vim.keymap.set("n", "<leader>dc", function()
+lazy("direnv.nvim")("n", "<leader>dc", function()
 	require("direnv").check()
 end, { desc = "Direnv check" })
 
---Dadbodui
+-- Dadbodui
 vim.keymap.set("n", "<leader>db", "<CMD>DBUIToggle<CR>", { desc = "DB UI toggle" })
 vim.keymap.set("n", "<leader>da", "<CMD>DBUIAddConnection<CR>", { desc = "DB: add connection" })
 vim.keymap.set("n", "<leader>df", "<CMD>DBUIFindBuffer<CR>", { desc = "DB: find buffer" })
@@ -112,13 +130,15 @@ vim.keymap.set("n", "<leader>dr", "<CMD>DapRestartFrame<CR>", { desc = "Dap rest
 vim.keymap.set("n", "<leader>dl", "<CMD>DapRunLast<CR>", { desc = "Dap run last" })
 vim.keymap.set("n", "<leader>dx", "<CMD>DapDisconnect<CR>", { desc = "Dap disconnect" })
 
-vim.keymap.set("n", "<leader>du", function()
+-- Loading nvim-dap sets up dap-ui and mason-nvim-dap in its `after` hook.
+local dap = lazy("nvim-dap")
+dap("n", "<leader>du", function()
 	require("dapui").toggle()
 end, { desc = "Dap UI toggle" })
-vim.keymap.set("n", "<leader>de", function()
+dap("n", "<leader>de", function()
 	require("dapui").eval()
 end, { desc = "Dap eval expression" })
-vim.keymap.set("v", "<leader>de", function()
+dap("v", "<leader>de", function()
 	require("dapui").eval()
 end, { desc = "Dap eval selection" })
 
@@ -128,42 +148,43 @@ local function float(id)
 	end
 end
 
-vim.keymap.set("n", "<leader>ds", float("scopes"), { desc = "Dap float scopes" })
-vim.keymap.set("n", "<leader>dt", float("stacks"), { desc = "Dap float stacks" })
-vim.keymap.set("n", "<leader>dw", float("watches"), { desc = "Dap float watches" })
-vim.keymap.set("n", "<leader>db", float("breakpoints"), { desc = "Dap float breakpoints" })
-vim.keymap.set("n", "<leader>dr", float("repl"), { desc = "Dap float repl" })
+dap("n", "<leader>ds", float("scopes"), { desc = "Dap float scopes" })
+dap("n", "<leader>dt", float("stacks"), { desc = "Dap float stacks" })
+dap("n", "<leader>dw", float("watches"), { desc = "Dap float watches" })
+dap("n", "<leader>db", float("breakpoints"), { desc = "Dap float breakpoints" })
+dap("n", "<leader>dr", float("repl"), { desc = "Dap float repl" })
 
 -- ── NEOTEST ─────────────────────────────────────────────────────────
-vim.keymap.set("n", "<leader>tt", function()
+local neotest = lazy("neotest")
+neotest("n", "<leader>tt", function()
 	require("neotest").run.run()
 end, { desc = "Test nearest" })
-vim.keymap.set("n", "<leader>tf", function()
+neotest("n", "<leader>tf", function()
 	require("neotest").run.run(vim.fn.expand("%"))
 end, { desc = "Test file" })
-vim.keymap.set("n", "<leader>tl", function()
+neotest("n", "<leader>tl", function()
 	require("neotest").run.run_last()
 end, { desc = "Test last" })
-vim.keymap.set("n", "<leader>td", function()
+neotest("n", "<leader>td", function()
 	---@diagnostic disable-next-line: missing-fields
 	require("neotest").run.run({ strategy = "dap" })
 end, { desc = "Debug nearest test" })
-vim.keymap.set("n", "<leader>ts", function()
+neotest("n", "<leader>ts", function()
 	require("neotest").run.stop()
 end, { desc = "Test stop" })
-vim.keymap.set("n", "<leader>ta", function()
+neotest("n", "<leader>ta", function()
 	require("neotest").run.attach()
 end, { desc = "Test attach" })
-vim.keymap.set("n", "<leader>to", function()
+neotest("n", "<leader>to", function()
 	require("neotest").output.open({ enter = true })
 end, { desc = "Test output" })
-vim.keymap.set("n", "<leader>tO", function()
+neotest("n", "<leader>tO", function()
 	require("neotest").output_panel.toggle()
 end, { desc = "Test output panel" })
-vim.keymap.set("n", "<leader>tS", function()
+neotest("n", "<leader>tS", function()
 	require("neotest").summary.toggle()
 end, { desc = "Test summary" })
-vim.keymap.set("n", "<leader>tw", function()
+neotest("n", "<leader>tw", function()
 	require("neotest").watch.toggle(vim.fn.expand("%"))
 end, { desc = "Test watch file" })
 
@@ -181,11 +202,9 @@ vim.keymap.set("n", "<leader>xL", "<CMD>Trouble loclist toggle<CR>", { desc = "L
 vim.keymap.set("n", "<leader>xQ", "<CMD>Trouble qflist toggle<CR>", { desc = "Quickfix list" })
 
 -- Code companion
--- lua/keymaps.lua
-
 local cc = function(cmd)
 	return function()
-		require("plugins.codecompanion").load()
+		lz.trigger_load("codecompanion.nvim")
 		vim.cmd(cmd)
 	end
 end

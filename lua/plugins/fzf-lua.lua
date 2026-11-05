@@ -1,8 +1,8 @@
 -- lua/plugins/fzf-lua.lua
 
-vim.pack.add({ "https://github.com/ibhagwan/fzf-lua" }, { load = true })
-
-local fzf = require("fzf-lua")
+vim.pack.add({
+	{ src = "https://github.com/ibhagwan/fzf-lua" },
+}, { load = function() end })
 
 -- Open lazygit for the directory of whatever is under the fzf cursor.
 -- lazygit(path) appends `-p <dir>` when given a directory; the :LazyGit*
@@ -29,65 +29,76 @@ local function lazygit_at_selection(selected)
 		dir = vim.fn.getcwd()
 	end
 
+	require("lz.n").trigger_load("lazygit.nvim")
 	require("lazygit").lazygit(dir)
 end
 
-fzf.setup({
-	"default-title",
+return {
+	{
+		"fzf-lua",
+		cmd = "FzfLua",
+		after = function()
+			local fzf = require("fzf-lua")
 
-	keymap = {
-		builtin = {
-			["<C-g>"] = lazygit_at_selection,
+			fzf.setup({
+				"default-title",
 
-			["<C-f>"] = "toggle-preview",
-			["<C-u>"] = "preview-page-up",
-			["<C-d>"] = "preview-page-down",
-			["<C-a>"] = "toggle-all",
-		},
+				keymap = {
+					builtin = {
+						["<C-g>"] = lazygit_at_selection,
+
+						["<C-f>"] = "toggle-preview",
+						["<C-u>"] = "preview-page-up",
+						["<C-d>"] = "preview-page-down",
+						["<C-a>"] = "toggle-all",
+					},
+				},
+
+				winopts = {
+					height = 0.85,
+					width = 0.80,
+					row = 0.35,
+					col = 0.50,
+					border = "rounded",
+					preview = {
+						layout = "flex",
+						vertical = "down:45%",
+						horizontal = "right:50%",
+						title = true,
+						scrollbar = "float",
+					},
+				},
+
+				files = {
+					prompt = "Files❯ ",
+					multiprocess = true,
+					git_icons = true,
+					file_icons = true,
+					color_icons = true,
+					fd_opts = "--color=never --type f --hidden --follow --exclude .git",
+				},
+
+				grep = {
+					prompt = "Rg❯ ",
+					input_prompt = "Grep For❯ ",
+					git_icons = true,
+					file_icons = true,
+					color_icons = true,
+				},
+
+				fzf_opts = {
+					["--layout"] = "reverse-list",
+					["--info"] = "inline",
+					["--no-scrollbar"] = true,
+				},
+
+				defaults = {
+					formatter = "path.filename_first",
+				},
+			})
+
+			-- Route vim.ui.select through fzf-lua (LSP code actions, diagnostics, etc.)
+			fzf.register_ui_select()
+		end,
 	},
-
-	winopts = {
-		height = 0.85,
-		width = 0.80,
-		row = 0.35,
-		col = 0.50,
-		border = "rounded",
-		preview = {
-			layout = "flex",
-			vertical = "down:45%",
-			horizontal = "right:50%",
-			title = true,
-			scrollbar = "float",
-		},
-	},
-
-	files = {
-		prompt = "Files❯ ",
-		multiprocess = true,
-		git_icons = true,
-		file_icons = true,
-		color_icons = true,
-		fd_opts = "--color=never --type f --hidden --follow --exclude .git",
-	},
-
-	grep = {
-		prompt = "Rg❯ ",
-		input_prompt = "Grep For❯ ",
-		git_icons = true,
-		file_icons = true,
-		color_icons = true,
-	},
-
-	fzf_opts = {
-		["--layout"] = "reverse-list",
-		["--info"] = "inline",
-		["--no-scrollbar"] = true,
-	},
-
-	defaults = {
-		formatter = "path.filename_first",
-	},
-})
-
--- Route vim.ui.select through fzf-lua (LSP code actions, diagnostics, etc.)
-fzf.register_ui_select()
+}

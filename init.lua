@@ -1,23 +1,18 @@
 require("vim._core.ui2").enable({})
 require("build")
 require("commands.packer")
-require("commands.mason_lsp_formatters_linters")
-require("commands.witch-line")
-require("plugins.direnv")
-require("plugins.mason_lsp_formatters_linters")
-require("plugins.neotest")
-require("plugins.trouble")
-require("plugins.base_16")
-require("plugins.mini")
-require("plugins.witch_statusline")
-require("plugins.markdown_preview")
-require("plugins.dadbod")
-require("plugins.blink")
-require("plugins.codecompanion")
-require("plugins.oil")
-require("plugins.git_setup")
-require("plugins.fzf-lua")
-require("plugins.tree_sitter_manager")
+require("commands.lint_lazydev")
 require("options")
+
+-- lz.n has to be on 'runtimepath' before its specs can be imported. Every
+-- other package is only installed by `vim.pack.add(..., { load = function() end })`;
+-- lz.n decides when it is actually loaded (see `:h lz.n`).
+require("plugins.lazy_n")
+require("lz.n").load("plugins")
+
 require("keymaps")
-require("matugen").setup()
+
+local ok, matugen = pcall(require, "matugen")
+if ok then
+	matugen.setup()
+end

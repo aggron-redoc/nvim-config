@@ -8,6 +8,9 @@ local function format(r, i)
 		"   " .. (r.url or ""),
 		"   " .. (r.summary or r.snippet or ""),
 	}
+	if r.rerank_score then
+		lines[#lines + 1] = ("   relevance: %.2f/3"):format(r.rerank_score)
+	end
 	if r.date then
 		lines[#lines + 1] = "   published: " .. r.date
 	end
@@ -15,7 +18,7 @@ local function format(r, i)
 		lines[#lines + 1] = "   authoritative source"
 	end
 	if r.content and r.content ~= "" then
-		lines[#lines + 1] = "   content: " .. r.content:sub(1, 3000)
+		lines[#lines + 1] = "   content: " .. r.content
 	end
 	return table.concat(lines, "\n")
 end

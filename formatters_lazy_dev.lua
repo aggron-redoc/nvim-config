@@ -30,8 +30,6 @@ vim.api.nvim_create_autocmd({ "CmdlineEnter", "UIEnter", "GUIEnter" }, {
 	callback = function()
 		local blink = require("commands.blink")
 		blink()
-		require("mason").setup()
-		require("mason-lspconfig").setup()
 		require("conform").setup({
 			formatters_by_ft = {
 				lua = { "stylua" },

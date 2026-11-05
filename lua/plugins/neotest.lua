@@ -14,13 +14,31 @@ vim.pack.add({
 	-- { src = 'https://github.com/rouge8/neotest-rust' },
 	-- { src = 'https://github.com/haydenmeade/neotest-jest' },
 	-- { src = 'https://github.com/marilari88/neotest-vitest' },
-}, { load = true })
+}, { load = function() end })
 
-require("neotest").setup({
-	adapters = {
-		-- require('neotest-plenary'),
-		-- require('neotest-python')({ dap = { justMyCode = false } }),
-		-- require('neotest-go'),
-		-- require('neotest-rust'),
+return {
+	-- Only affects CursorHold handling, so it can wait until after startup.
+	{ "FixCursorHold.nvim", event = "DeferredUIEnter" },
+
+	-- neotest's Lua API depends on nvim-nio.
+	{ "nvim-nio", lazy = true },
+
+	{
+		"neotest",
+		lazy = true,
+		cmd = "Neotest",
+		before = function()
+			require("lz.n").trigger_load("nvim-nio")
+		end,
+		after = function()
+			require("neotest").setup({
+				adapters = {
+					-- require('neotest-plenary'),
+					-- require('neotest-python')({ dap = { justMyCode = false } }),
+					-- require('neotest-go'),
+					-- require('neotest-rust'),
+				},
+			})
+		end,
 	},
-})
+}
