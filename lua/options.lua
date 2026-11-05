@@ -1,4 +1,11 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 vim.g.netrw_banner = 0
+
+vim.o.exrc = true
+
+vim.o.mouse = ""
 
 vim.opt.nu = true
 vim.opt.relativenumber = true

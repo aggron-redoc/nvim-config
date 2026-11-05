@@ -1,19 +1,13 @@
 require("vim._core.ui2").enable({})
 require("build")
 require("commands.packer")
-require("commands.mason_lsp_formatters_linters")
-require("plugins.direnv")
-require("plugins.mason_lsp_formatters_linters")
-require("plugins.neotest")
-require("plugins.trouble")
-require("plugins.base_16")
-require("plugins.mini")
-require("plugins.dadbod")
-require("plugins.blink")
-require("plugins.oil")
-require("plugins.git_setup")
-require("plugins.fzf-lua")
-require("plugins.tree_sitter_manager")
+require("commands.lint")
 require("options")
+
+-- lz.n has to be on 'runtimepath' before its specs can be imported. Every
+-- other package is only installed by `vim.pack.add(..., { load = function() end })`;
+-- lz.n decides when it is actually loaded (see `:h lz.n`).
+require("plugins.lazy_n")
+require("lz.n").load("plugins")
+
 require("keymaps")
-require("plugins.moonfly")

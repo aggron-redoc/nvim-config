@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "CopilotChat.nvim": {
+      "rev": "2b7da97d655416462d4d5c38d0eb1f1eacc900a2",
+      "src": "https://github.com/CopilotC-Nvim/CopilotChat.nvim"
+    },
     "FixCursorHold.nvim": {
       "rev": "1900f89dc17c603eec29960f57c00bd9ae696495",
       "src": "https://github.com/antoinemadec/FixCursorHold.nvim"
@@ -13,9 +17,13 @@
       "src": "https://github.com/Saghen/blink.cmp",
       "version": "1.0.0 - 2.0.0"
     },
-   "conform.nvim": {
+    "conform.nvim": {
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim.git"
+    },
+    "copilot.lua": {
+      "rev": "192b297ef37d9f6a8b889c07fb9a3dd16f1cb86f",
+      "src": "https://github.com/zbirenbaum/copilot.lua"
     },
     "direnv.nvim": {
       "rev": "a100de8a60828888226f4f2beaf629bf06587da6",
@@ -41,17 +49,9 @@
       "rev": "9ffc6103926718f7070fb4017694543cd7dc9718",
       "src": "https://github.com/kdheepak/lazygit.nvim"
     },
-    "mason-lspconfig.nvim": {
-      "rev": "cd6c64d85c9871aaf759d26f2371029d6d674a48",
-      "src": "https://github.com/mason-org/mason-lspconfig.nvim.git"
-    },
-    "mason-nvim-dap.nvim": {
-      "rev": "9a10e096703966335bd5c46c8c875d5b0690dade",
-      "src": "https://github.com/jay-babu/mason-nvim-dap.nvim"
-    },
-    "mason.nvim": {
-      "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
-      "src": "https://github.com/mason-org/mason.nvim.git"
+    "lz.n": {
+      "rev": "4c7599b48ea274d093def4108b3cb59bbaddd749",
+      "src": "https://github.com/lumen-oss/lz.n.git"
     },
     "mini.ai": {
       "rev": "a4f5648dedf435e6306205135d1babb563b55d28",
@@ -113,7 +113,11 @@
       "rev": "d3733d933833a0e59b813ecec99341527adf0c28",
       "src": "https://github.com/stevearc/oil.nvim"
     },
-   "tree-sitter-manager.nvim": {
+    "plenary.nvim": {
+      "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "tree-sitter-manager.nvim": {
       "rev": "06c90a3af8eb471f4a4ff979d681312284a8583a",
       "src": "https://github.com/romus204/tree-sitter-manager.nvim"
     },
@@ -132,6 +136,6 @@
     "vim-dadbod-ui": {
       "rev": "afd07819d8efcefc3317205b855ad4e3513b0011",
       "src": "https://github.com/kristijanhusak/vim-dadbod-ui"
-    } 
+    }
   }
 }
