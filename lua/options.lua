@@ -4,6 +4,7 @@ vim.g.maplocalleader = " "
 vim.g.netrw_banner = 0
 
 vim.o.exrc = true
+vim.o.secure = true
 
 vim.o.mouse = ""
 

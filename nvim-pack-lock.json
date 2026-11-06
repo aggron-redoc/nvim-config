@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "CopilotChat.nvim": {
+      "rev": "2b7da97d655416462d4d5c38d0eb1f1eacc900a2",
+      "src": "https://github.com/CopilotC-Nvim/CopilotChat.nvim"
+    },
     "FixCursorHold.nvim": {
       "rev": "1900f89dc17c603eec29960f57c00bd9ae696495",
       "src": "https://github.com/antoinemadec/FixCursorHold.nvim"
@@ -21,6 +25,10 @@
     "conform.nvim": {
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim.git"
+    },
+    "copilot.lua": {
+      "rev": "192b297ef37d9f6a8b889c07fb9a3dd16f1cb86f",
+      "src": "https://github.com/zbirenbaum/copilot.lua"
     },
     "direnv.nvim": {
       "rev": "a100de8a60828888226f4f2beaf629bf06587da6",
